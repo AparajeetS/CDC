@@ -1,0 +1,183 @@
+theory:
+  classy:
+    # Point this to a CLASS source tree after applying the CDC patches in
+    # cdc_upgrade/class_patches/ and recompiling classy.
+    path: C:/Research/cdc_journal/_vendor_class_public
+    stop_at_error: true
+    extra_args:
+      output: tCl,pCl,lCl,mPk
+      lensing: yes
+      non linear: hmcode
+      P_k_max_h/Mpc: 5.0
+      z_max_pk: 4.0
+      N_ncdm: 1
+      m_ncdm: 0.06
+      N_ur: 2.0328
+      cdc_model: yes
+      cdc_n: 2.0
+      cdc_beta_B: 1.0
+
+likelihood:
+  planck_2018_lowl.TT: null
+  planck_2018_lowl.EE: null
+  planck_2018_highl_CamSpec.TTTEEE: null
+  planck_2018_lensing.native: null
+  bao.desi_dr2: null
+  sn.pantheonplus: null
+
+params:
+  logA:
+    prior:
+      min: 1.61
+      max: 3.91
+    ref:
+      dist: norm
+      loc: 3.045
+      scale: 0.01
+    proposal: 0.005
+    latex: \log(10^{10} A_\mathrm{s})
+    drop: true
+
+  A_s:
+    value: "lambda logA: 1e-10*np.exp(logA)"
+    latex: A_\mathrm{s}
+
+  n_s:
+    prior:
+      min: 0.90
+      max: 1.05
+    ref:
+      dist: norm
+      loc: 0.965
+      scale: 0.004
+    proposal: 0.002
+    latex: n_\mathrm{s}
+
+  tau_reio:
+    prior:
+      min: 0.01
+      max: 0.12
+    ref:
+      dist: norm
+      loc: 0.055
+      scale: 0.006
+    proposal: 0.003
+    latex: \tau_\mathrm{reio}
+
+  H0:
+    prior:
+      min: 55
+      max: 85
+    ref:
+      dist: norm
+      loc: 68.0
+      scale: 2.0
+    proposal: 0.8
+    latex: H_0
+
+  omega_b:
+    prior:
+      min: 0.020
+      max: 0.0245
+    ref:
+      dist: norm
+      loc: 0.0224
+      scale: 0.00015
+    proposal: 0.00012
+    latex: \omega_\mathrm{b}
+
+  omega_cdm:
+    prior:
+      min: 0.08
+      max: 0.16
+    ref:
+      dist: norm
+      loc: 0.120
+      scale: 0.003
+    proposal: 0.0015
+    latex: \omega_\mathrm{cdm}
+
+  cdc_v:
+    prior:
+      min: 0.02
+      max: 1.0
+    ref:
+      dist: norm
+      loc: 0.15
+      scale: 0.03
+    proposal: 0.03
+    latex: v/M_\mathrm{Pl}
+
+  cdc_f_vac:
+    prior:
+      min: 0.0
+      max: 0.5
+    ref:
+      dist: norm
+      loc: 0.15
+      scale: 0.05
+    proposal: 0.03
+    latex: f_\mathrm{vac}
+
+  cdc_Omega_star:
+    prior:
+      min: 0.02
+      max: 2.5
+    ref:
+      dist: lognorm
+      loc: 0.0
+      scale: 0.35
+      s: 0.35
+    proposal: 0.08
+    latex: \Omega_\ast
+
+  cdc_chi_ratio:
+    prior:
+      min: 0.0
+      max: 1.0
+    ref:
+      dist: norm
+      loc: 0.2
+      scale: 0.08
+    proposal: 0.05
+    latex: \chi_\mathrm{init}/v
+    drop: true
+
+  cdc_chi_ini:
+    value: "lambda cdc_chi_ratio, cdc_v: cdc_chi_ratio*cdc_v"
+    latex: \chi_\mathrm{init}
+
+  Omega_m:
+    latex: \Omega_\mathrm{m}
+
+  sigma8:
+    latex: \sigma_8
+
+  S8:
+    derived: "lambda sigma8, Omega_m: sigma8*np.sqrt(Omega_m/0.3)"
+    latex: S_8
+
+  cdc_w0:
+    latex: w_0^\mathrm{CDC}
+
+  cdc_wa:
+    latex: w_a^\mathrm{CDC}
+
+  cdc_lambda_eff:
+    latex: \Lambda_\mathrm{eff}^\mathrm{CDC}
+
+  age:
+    latex: "{\\rm Age}/\\mathrm{Gyr}"
+
+sampler:
+  mcmc:
+    drag: true
+    oversample_power: 0.4
+    proposal_scale: 1.9
+    covmat: auto
+    learn_proposal: true
+    max_tries: 400
+    Rminus1_stop: 0.01
+    Rminus1_cl_stop: 0.2
+
+output: C:/Research/cdc_journal/cdc_upgrade/chains/cdc_full

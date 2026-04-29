@@ -216,3 +216,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+chains/
+packages/
+packages_test/
+*.dill_pickle
+*.checkpoint
+*.covmat
+*.progress
+*.updated.yaml
+*.lock*
