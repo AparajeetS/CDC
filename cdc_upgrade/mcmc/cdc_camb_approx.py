@@ -28,7 +28,15 @@ if str(_ROOT) not in sys.path:
 from cobaya.log import LoggedError
 from cobaya.theories.camb.camb import CAMB
 
-from cdc_upgrade.python.cdc_boltzmann_reference import CDCParams, CDCReferenceModel
+try:
+    from cdc_upgrade.python.cdc_boltzmann_reference import CDCParams, CDCReferenceModel
+except ModuleNotFoundError as exc:
+    if exc.name != "cdc_upgrade":
+        raise
+    _PYTHON_DIR = Path(__file__).resolve().parents[1] / "python"
+    if str(_PYTHON_DIR) not in sys.path:
+        sys.path.insert(0, str(_PYTHON_DIR))
+    from cdc_boltzmann_reference import CDCParams, CDCReferenceModel
 
 
 class CDCCAMBApprox(CAMB):

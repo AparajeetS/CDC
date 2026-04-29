@@ -12,15 +12,6 @@ _ROOT = Path(__file__).resolve().parents[2]
 if str(_ROOT) not in sys.path:
     sys.path.insert(0, str(_ROOT))
 
-from cobaya.run import run
-
-from cdc_upgrade.mcmc.baseline_common import (
-    base_cosmology_params,
-    build_info as build_baseline_info,
-    default_camb_args,
-)
-from cdc_upgrade.mcmc.cdc_camb_approx import CDCCAMBApprox
-
 
 def build_info(
     output_root: str,
@@ -30,6 +21,23 @@ def build_info(
     rminus1_stop: float = 0.02,
     rminus1_cl_stop: float = 0.2,
 ):
+    try:
+        from cdc_upgrade.mcmc.baseline_common import (
+            base_cosmology_params,
+            build_info as build_baseline_info,
+            default_camb_args,
+        )
+        from cdc_upgrade.mcmc.cdc_camb_approx import CDCCAMBApprox
+    except ModuleNotFoundError as exc:
+        if exc.name != "cdc_upgrade":
+            raise
+        from baseline_common import (  # type: ignore[no-redef]
+            base_cosmology_params,
+            build_info as build_baseline_info,
+            default_camb_args,
+        )
+        from cdc_camb_approx import CDCCAMBApprox  # type: ignore[no-redef]
+
     params_block = base_cosmology_params(theory_provides_omega_m=True)
     params_block.update(
         {
@@ -123,6 +131,16 @@ def main():
     parser.add_argument("--rminus1-stop", type=float, default=0.02)
     parser.add_argument("--rminus1-cl-stop", type=float, default=0.2)
     args = parser.parse_args()
+
+    try:
+        from cobaya.run import run
+    except ModuleNotFoundError as exc:
+        if exc.name == "cobaya":
+            raise SystemExit(
+                "Cobaya is required to run this script. Install Cobaya and its "
+                "likelihood data, then rerun the command."
+            ) from exc
+        raise
 
     gcc_bin = Path("C:/Users/apara/gcc/bin")
     if gcc_bin.exists():

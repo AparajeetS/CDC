@@ -1,0 +1,39 @@
+{
+  "description": "Geometric background results quoted in CDC Paper II, using DESI DR2 Table-IV BAO observables and compressed Planck 2018 CMB distance information.",
+  "generated_by": "python cdc_upgrade/paper2_check_claims.py --recompute-geometric",
+  "rows": {
+    "lcdm_bao_only": {
+      "Omega_m": 0.2970,
+      "h_rd_Mpc": 101.56,
+      "chi2": 10.551
+    },
+    "lcdm_bao_cmb": {
+      "Omega_m": 0.3082,
+      "h": 0.6890,
+      "Omega_b_h2": 0.02244,
+      "chi2": 12.839
+    },
+    "w0wa_bao_cmb": {
+      "Omega_m": 0.3424,
+      "h": 0.6586,
+      "w0": -0.6174,
+      "wa": -1.1879,
+      "chi2": 8.439
+    },
+    "cdc_bao_cmb": {
+      "Omega_m": 0.3014,
+      "h": 0.6964,
+      "v": 0.103,
+      "DeltaV_over_OmegaLambda": 0.165,
+      "Omega_star": 0.527,
+      "chi_i_over_v": 0.249,
+      "chi2": 12.750
+    }
+  },
+  "information_criteria": {
+    "n_data_bao_cmb": 16,
+    "delta_chi2_cdc_minus_lcdm": -0.089,
+    "delta_aic_cdc_minus_lcdm": 7.911,
+    "delta_bic_cdc_minus_lcdm": 11.002
+  }
+}
